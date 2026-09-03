@@ -1,54 +1,64 @@
 # travel-planner
 
-모바일 우선(mobile-first) 여행 플래너 웹앱.
+모바일 퍼스트 여행 플래너 웹앱.
 
-관광지·맛집·카페를 먼저 **후보 풀**에 모아두고, 여행 당일 또는 계획 단계에서
-위치가 가까운 것끼리 **DAY 단위로 배치**하는 방식을 그대로 지원한다.
-"계획적이면서 즉흥적인" 워크플로우가 데이터 모델과 UI의 1급 개념이다.
+가고 싶은 장소를 리스트에 자유롭게 모아두고, **지도를 보면서 가까운 곳끼리 같은 날에
+배치**해 효율적인 코스를 짜는 것이 핵심 워크플로우다. 계획적이면서 즉흥적인 여행
+방식을 그대로 지원한다.
 
-## 스택
+## 문서 구조
 
-| 영역 | 선택 | 버전 (2026-09 기준 최신) |
+기준 문서는 **구현 계획서 v2**다. `docs/08`이 실행 단위 태스크이고, `docs/09`에
+정리한 결정 사항이 확정되면 Phase 1을 시작한다.
+
+| 문서 | 상태 | 내용 |
 | --- | --- | --- |
-| 프레임워크 | Next.js App Router | 16.3.4 |
-| 런타임 | React | 19.2.8 |
-| 언어 | TypeScript (strict) | 7.0.2 |
-| 스타일 | Emotion | 11.14.0 |
-| 서버 상태 | TanStack Query | 5.102.8 |
-| DnD | dnd-kit core / sortable | 6.3.1 / 10.0.0 |
-| 제스처·스프링 | Motion | 13.1.1 |
-| 지도 | MapLibre GL JS | 6.6.0 |
-| 차트 | Recharts | 3.10.1 |
-| 스키마 검증 | Zod | 4.5.4 |
-| 폼 | React Hook Form | 7.87.0 |
-| 목 서버 | MSW | 2.15.0 |
-| BaaS | Supabase (Postgres + PostGIS + Auth + Realtime) | js 2.112.4 / ssr 0.12.5 |
-| 호스팅 | Vercel (앱) + Supabase (DB) | — |
+| [docs/08-implementation-tasks.md](docs/08-implementation-tasks.md) | **실행 기준** | 계획서 v2를 PR 단위 티켓으로 분해. Phase 1~10 |
+| [docs/09-open-decisions.md](docs/09-open-decisions.md) | **결정 대기** | 계획서 v2와 v1 설계의 충돌 11건. D1·D2·D10은 착수 차단 |
+| [docs/01-architecture.md](docs/01-architecture.md) | v1 참고 | 렌더링 경계, 상태 소유권, 성능 예산 |
+| [docs/02-data-model.md](docs/02-data-model.md) | v1 참고 | RLS, 집계 View, 트랜잭션 RPC, 인덱스 설계 |
+| [docs/03-environments.md](docs/03-environments.md) | v1 참고 | 환경 3종, 환경변수, 마이그레이션, CI |
+| [docs/04-design-system.md](docs/04-design-system.md) | v1 참고 | **스크린샷 실측 색상 토큰 + 대비 검증 결과** |
+| [docs/05-motion-and-navigation.md](docs/05-motion-and-navigation.md) | v1 참고 | View Transitions 4패턴, 제스처 레이어 |
+| [docs/06-features-and-algorithms.md](docs/06-features-and-algorithms.md) | v1 참고 | 클러스터링, 경로 최적화, 이동시간·비용 자동화 |
+| [docs/07-roadmap.md](docs/07-roadmap.md) | 대체됨 | v1 단계 계획. `docs/08`이 대신한다 |
 
-## 문서
+`v1 참고` 문서는 스택 선택이 계획서 v2와 다르지만, 알고리즘·데이터 모델·접근성
+검증 내용은 그대로 유효하다. 특히 `docs/04`의 실측 색상값과 명도 대비 계산,
+`docs/06`의 좌표 보정·경로 최적화는 계획서 v2에서도 재사용한다.
 
-| 문서 | 내용 |
-| --- | --- |
-| [docs/01-architecture.md](docs/01-architecture.md) | 시스템 구성, 렌더링 전략, 폴더 구조, 라우팅, 상태 소유권 |
-| [docs/02-data-model.md](docs/02-data-model.md) | 테이블 DDL, RLS, 집계 View, RPC, 인덱스 |
-| [docs/03-environments.md](docs/03-environments.md) | local / preview / production, 환경변수, 마이그레이션, CI |
-| [docs/04-design-system.md](docs/04-design-system.md) | 스크린샷 실측 기반 토큰, 타이포, 컴포넌트 스펙 |
-| [docs/05-motion-and-navigation.md](docs/05-motion-and-navigation.md) | View Transitions 4패턴, 제스처 레이어, 접근성 |
-| [docs/06-features-and-algorithms.md](docs/06-features-and-algorithms.md) | 뷰 구성, 위치 클러스터링, 순서 최적화, 이동시간·비용 자동화 |
-| [docs/07-roadmap.md](docs/07-roadmap.md) | 단계별 실행 체크리스트 |
+> 계획서 v2 원문은 아직 레포에 없다. `docs/plan-v2.md`로 커밋해두면 태스크 문서가
+> 섹션을 정확히 참조할 수 있다.
+
+## 화면 구성 (계획서 v2)
+
+```
+로딩 스플래시 → 랜딩(여행 카드 리스트) → 여행 생성
+                      └─ 카드 선택 → 여행 디테일
+                                       ├─ 개요    숙소·교통·요약
+                                       ├─ 플래너  지도 + 바텀시트 일정 (핵심)
+                                       ├─ 리스트  장소 카테고리별 관리
+                                       ├─ 비용    파이차트 + 그룹핑
+                                       ├─ 준비    체크리스트
+                                       └─ 메모    위시리스트
+```
+
+## 스택 (계획서 v2, 일부 결정 대기)
+
+| 영역 | 선택 | 비고 |
+| --- | --- | --- |
+| 프레임워크 | Next.js App Router | 버전은 D3 (권장 16.3.4) |
+| 스타일 | Tailwind + shadcn/ui + Notion 디자인 | D1 확정 대기 |
+| 애니메이션 | Framer Motion (+ View Transitions) | D3과 연동 |
+| 데이터 | Supabase (Postgres) | Phase 10 연동 |
+| mock 계층 | React Query + MSW 권장 | D2 확정 대기 |
+| 지도 | Naver(한국) / Google(해외) | 범위는 D4 |
+| 차트 | Recharts | |
+| DnD | dnd-kit | 터치 200ms 홀드 |
+| 환율 | Frankfurter (`api.frankfurter.dev`) | 검증 완료 (D11) |
+| 호스팅 | Vercel | 리전 `icn1` 권장 |
 
 ## 현재 상태
 
-설계 문서만 존재한다. 구현 코드는 아직 없다.
-[docs/07-roadmap.md](docs/07-roadmap.md)의 1단계부터 진행한다.
-
-## 시작하기 (구현 후 사용)
-
-```bash
-pnpm install
-cp .env.example .env.local   # 값 채우기
-pnpm supabase start          # 로컬 Postgres + Studio (Docker 필요)
-pnpm db:push                 # 마이그레이션 적용
-pnpm db:types                # DB → TypeScript 타입 생성
-pnpm dev
-```
+설계·계획 문서만 존재한다. 구현 코드는 없다.
+[docs/09](docs/09-open-decisions.md)의 D1·D2·D10 확정 후 `docs/08`의 Phase 1부터 착수한다.
