@@ -1,6 +1,7 @@
 import { Home as HomeIcon, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { MotionDemo } from "@/components/motion-demo";
 
 // Tailwind는 클래스명을 정적으로 스캔하므로 템플릿 문자열로 조합하지 않고
 // 전체 클래스명을 리터럴로 나열한다.
@@ -49,6 +50,8 @@ export default function Home() {
           <Button variant="outline">아웃라인</Button>
           <Button variant="destructive">삭제</Button>
         </div>
+
+        <MotionDemo />
       </main>
       <BottomNav
         items={[
