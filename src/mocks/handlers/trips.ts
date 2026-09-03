@@ -6,7 +6,7 @@ import { createTripInputSchema, initialTrips, type Trip } from "@/mocks/fixtures
 // 실제 DB가 붙기 전까지(Phase 10) React Query의 mutation 왕복을 검증하는 용도.
 let trips: Trip[] = [...initialTrips];
 
-export const handlers = [
+export const tripHandlers = [
   http.get("/api/trips", async () => {
     return HttpResponse.json(trips);
   }),
