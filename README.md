@@ -8,8 +8,9 @@
 
 ## 문서 구조
 
-기준 문서는 **구현 계획서 v2**다. `docs/08`이 실행 단위 태스크이고, `docs/09`에
-정리한 결정 사항이 확정되면 Phase 1을 시작한다.
+기준 문서는 **구현 계획서 v2**다. `docs/08`이 실행 단위 태스크이고, `docs/09`의
+착수 차단 항목(D1·D2·D10)은 2026-09-03 확정되었다 — Tailwind+shadcn/ui, React
+Query+MSW, Notion 스타일(웜 미니멀리즘·serif 헤딩). Phase 1 구현 중.
 
 | 문서 | 상태 | 내용 |
 | --- | --- | --- |
@@ -43,16 +44,16 @@
                                        └─ 메모    위시리스트
 ```
 
-## 스택 (계획서 v2, 일부 결정 대기)
+## 스택 (계획서 v2 + 확정 결정)
 
 | 영역 | 선택 | 비고 |
 | --- | --- | --- |
-| 프레임워크 | Next.js App Router | 버전은 D3 (권장 16.3.4) |
-| 스타일 | Tailwind + shadcn/ui + Notion 디자인 | D1 확정 대기 |
-| 애니메이션 | Framer Motion (+ View Transitions) | D3과 연동 |
-| 데이터 | Supabase (Postgres) | Phase 10 연동 |
-| mock 계층 | React Query + MSW 권장 | D2 확정 대기 |
-| 지도 | Naver(한국) / Google(해외) | 범위는 D4 |
+| 프레임워크 | Next.js 16 App Router | D3 확정 |
+| 스타일 | **Tailwind CSS v4 + shadcn/ui** | D1 확정 |
+| 디자인 방향 | **Notion 스타일** (웜 미니멀리즘·serif 헤딩·soft surface) | D10 확정, 카테고리 팔레트는 실측값 재사용 |
+| 애니메이션 | Framer Motion (제스처) + View Transitions (라우트 전환) | D3 |
+| 데이터 레이어 | **React Query + MSW** (Phase 1~9), Supabase 연동은 Phase 10 | D2 확정 |
+| 지도 | Naver(한국) / Google(해외), 어댑터 먼저 구현 1개부터 | D4 |
 | 차트 | Recharts | |
 | DnD | dnd-kit | 터치 200ms 홀드 |
 | 환율 | Frankfurter (`api.frankfurter.dev`) | 검증 완료 (D11) |
@@ -60,5 +61,5 @@
 
 ## 현재 상태
 
-설계·계획 문서만 존재한다. 구현 코드는 없다.
-[docs/09](docs/09-open-decisions.md)의 D1·D2·D10 확정 후 `docs/08`의 Phase 1부터 착수한다.
+Phase 1(프로젝트 셋업) 구현 중. `docs/08`의 Phase 단위로 하나씩 구현하고
+커밋·리뷰 후 다음 Phase로 진행한다.
