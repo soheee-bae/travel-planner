@@ -61,6 +61,7 @@ describe("useCreateTrip / useDeleteTrip", () => {
         endDate: "2026-12-03",
         companions: "혼자",
         coverEmoji: "✈️",
+        baseCurrency: "KRW",
       });
     });
 

@@ -9,6 +9,7 @@ export const tripSchema = z.object({
   endDate: z.string(),
   companions: z.string(),
   coverEmoji: z.string(),
+  baseCurrency: z.enum(["KRW", "JPY", "USD", "EUR"]),
 });
 
 export type Trip = z.infer<typeof tripSchema>;
@@ -26,6 +27,7 @@ export const initialTrips: Trip[] = [
     endDate: "2026-09-17",
     companions: "친구들과",
     coverEmoji: "🇰🇷",
+    baseCurrency: "KRW",
   },
   {
     id: "trip_osaka",
@@ -36,6 +38,7 @@ export const initialTrips: Trip[] = [
     endDate: "2026-10-04",
     companions: "커플",
     coverEmoji: "🇯🇵",
+    baseCurrency: "JPY",
   },
   {
     // 첨부 스크린샷(나고야 3일 일정)을 재현하기 위한 시드. Phase 4~6의 실제
@@ -48,5 +51,6 @@ export const initialTrips: Trip[] = [
     endDate: "2026-11-08",
     companions: "혼자",
     coverEmoji: "🏯",
+    baseCurrency: "JPY",
   },
 ];
