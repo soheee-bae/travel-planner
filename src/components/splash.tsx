@@ -28,7 +28,7 @@ export function Splash() {
           aria-hidden="true"
           exit={{ opacity: 0 }}
           transition={{ duration: exitDuration }}
-          className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background"
+          className="pointer-events-none absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background"
         >
           <motion.span
             className="text-4xl"

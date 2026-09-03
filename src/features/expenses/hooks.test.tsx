@@ -3,7 +3,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import type { ReactNode } from "react";
 import { server } from "@/mocks/server";
-import { useCreateExpense, useDeleteExpense, useExpenses, useFxRate } from "@/features/expenses/hooks";
+import {
+  useCreateExpense,
+  useDeleteExpense,
+  useExpenses,
+  useFxRate,
+} from "@/features/expenses/hooks";
 
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());

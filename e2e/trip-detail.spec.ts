@@ -16,9 +16,9 @@ test("나고야 여행 상세에 6탭이 보이고 개요 탭에 숙소·교통�
 
 test("탭을 전환하면 URL이 ?tab= 으로 바뀌고 해당 콘텐츠가 보인다", async ({ page }) => {
   await page.goto("/trips/trip_nagoya");
-  await page.getByRole("tab", { name: "준비" }).click();
-  await expect(page).toHaveURL(/\?tab=prep/);
-  await expect(page.getByText(/Phase 8에서 만들어집니다/)).toBeVisible();
+  await page.getByRole("tab", { name: "메모" }).click();
+  await expect(page).toHaveURL(/\?tab=memo/);
+  await expect(page.getByText(/Phase 9에서 만들어집니다/)).toBeVisible();
 
   await page.getByRole("tab", { name: "개요" }).click();
   await expect(page).not.toHaveURL(/\?tab=/);
