@@ -8,10 +8,10 @@ import { TabNavigation } from "@/features/trips/components/tab-navigation";
 import { OverviewTab } from "@/features/overview/components/overview-tab";
 import { PlacesTab } from "@/features/places/components/places-tab";
 import { PlannerTab } from "@/features/planner/components/planner-tab";
+import { BudgetTab } from "@/features/expenses/components/budget-tab";
 import { useMotionSafeDuration } from "@/hooks/use-motion-safe";
 
 const PLACEHOLDER_COPY: Partial<Record<TripTab, string>> = {
-  budget: "비용 파이차트와 일자별 내역은 Phase 7에서 만들어집니다.",
   prep: "여행 준비 체크리스트는 Phase 8에서 만들어집니다.",
   memo: "위시리스트·메모는 Phase 9에서 만들어집니다.",
 };
@@ -46,7 +46,8 @@ export function TripDetailView({ tripId }: { tripId: string }) {
             {tab === "overview" && <OverviewTab tripId={tripId} />}
             {tab === "places" && <PlacesTab tripId={tripId} />}
             {tab === "planner" && <PlannerTab trip={trip} />}
-            {tab !== "overview" && tab !== "places" && tab !== "planner" && (
+            {tab === "budget" && <BudgetTab trip={trip} />}
+            {tab !== "overview" && tab !== "places" && tab !== "planner" && tab !== "budget" && (
               <p className="p-6 text-sm text-muted-foreground">{PLACEHOLDER_COPY[tab]}</p>
             )}
           </motion.div>
