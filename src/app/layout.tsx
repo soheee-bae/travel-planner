@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "여행 플래너",
@@ -16,7 +20,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html lang="ko" className={cn("h-full antialiased", "font-sans", geist.variable)}>
       <body className="min-h-full">{children}</body>
     </html>
   );
