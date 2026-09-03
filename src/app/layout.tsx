@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Noto_Sans_KR, Noto_Serif_KR } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { AppShell } from "@/components/layout/AppShell";
 import "./globals.css";
 
 // 본문·UI 전용. 카드 제목·버튼·탭 라벨·본문은 항상 이 폰트를 쓴다 (DESIGN.md §타이포그래피).
@@ -36,9 +37,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="ko"
-      className={cn("h-full antialiased", "font-sans", notoSansKR.variable, notoSerifKR.variable)}
+      className={cn("antialiased", notoSansKR.variable, notoSerifKR.variable)}
     >
-      <body className="min-h-full">{children}</body>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }

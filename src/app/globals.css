@@ -65,6 +65,7 @@
   --color-category-cafe-fg: var(--category-cafe-fg);
   --color-category-stay-bg: var(--category-stay-bg);
   --color-category-stay-fg: var(--category-stay-fg);
+  --color-shell-outer: var(--shell-outer);
 }
 
 :root {
@@ -125,6 +126,10 @@
   --category-cafe-fg: oklch(0.5088 0.1009 70.01); /* #8A5A16 */
   --category-stay-bg: oklch(0.9596 0.0161 206.44); /* #E6F5F7 */
   --category-stay-fg: oklch(0.5198 0.0936 223.13); /* #0E7490 */
+
+  /* 데스크톱에서 max-w-md 프레임 바깥(레터박스)에 보이는 배경. 앱 프레임보다
+     한 톤 어둡게 해서 "이 안이 앱이다"라는 경계를 시각적으로 준다. */
+  --shell-outer: oklch(0.9082 0.0092 78.28); /* #E4E0DA */
 }
 
 /*
@@ -173,10 +178,24 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
     @apply font-sans;
+    /* iOS 텍스트 자동 확대 방지. 뷰포트 meta의 maximumScale과 함께 더블탭 줌도 막는다. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-dvh bg-shell-outer text-foreground;
+    /* 모바일 웹 필수 리셋 (docs/04-design-system.md §4.7) */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+  }
+
+  /* 롱프레스 드래그 대상에서 시스템 컨텍스트 메뉴가 뜨는 것을 막는다.
+     DnD를 붙이는 Phase 6~7에서 드래그 핸들에 명시적으로 사용한다. */
+  .touch-callout-none {
+    -webkit-touch-callout: none;
   }
 }
