@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useTrip } from "@/features/trips/hooks";
-import { useTripTab, type TripTab } from "@/features/trips/hooks/use-trip-tab";
+import { useTripTab } from "@/features/trips/hooks/use-trip-tab";
 import { TripHeader } from "@/features/trips/components/trip-header";
 import { TabNavigation } from "@/features/trips/components/tab-navigation";
 import { OverviewTab } from "@/features/overview/components/overview-tab";
@@ -10,11 +10,8 @@ import { PlacesTab } from "@/features/places/components/places-tab";
 import { PlannerTab } from "@/features/planner/components/planner-tab";
 import { BudgetTab } from "@/features/expenses/components/budget-tab";
 import { PrepTab } from "@/features/checklists/components/prep-tab";
+import { MemoTab } from "@/features/wishlist/components/memo-tab";
 import { useMotionSafeDuration } from "@/hooks/use-motion-safe";
-
-const PLACEHOLDER_COPY: Partial<Record<TripTab, string>> = {
-  memo: "위시리스트·메모는 Phase 9에서 만들어집니다.",
-};
 
 export function TripDetailView({ tripId }: { tripId: string }) {
   const { data: trip, isLoading, isError } = useTrip(tripId);
@@ -48,13 +45,7 @@ export function TripDetailView({ tripId }: { tripId: string }) {
             {tab === "planner" && <PlannerTab trip={trip} />}
             {tab === "budget" && <BudgetTab trip={trip} />}
             {tab === "prep" && <PrepTab tripId={tripId} />}
-            {tab !== "overview" &&
-              tab !== "places" &&
-              tab !== "planner" &&
-              tab !== "budget" &&
-              tab !== "prep" && (
-                <p className="p-6 text-sm text-muted-foreground">{PLACEHOLDER_COPY[tab]}</p>
-              )}
+            {tab === "memo" && <MemoTab tripId={tripId} />}
           </motion.div>
         </AnimatePresence>
       </div>

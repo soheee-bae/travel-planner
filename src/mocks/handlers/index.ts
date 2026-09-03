@@ -3,6 +3,7 @@ import { overviewHandlers } from "@/mocks/handlers/overview";
 import { placesHandlers } from "@/mocks/handlers/places";
 import { expensesHandlers } from "@/mocks/handlers/expenses";
 import { checklistsHandlers } from "@/mocks/handlers/checklists";
+import { wishlistHandlers } from "@/mocks/handlers/wishlist";
 
 export const handlers = [
   ...tripHandlers,
@@ -10,4 +11,5 @@ export const handlers = [
   ...placesHandlers,
   ...expensesHandlers,
   ...checklistsHandlers,
+  ...wishlistHandlers,
 ];

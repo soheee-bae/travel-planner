@@ -94,7 +94,10 @@ export function DayItineraryList({ tripId, places }: { tripId: string; places: P
   );
 
   // 부모(usePlaces) 데이터가 바뀌면(다른 곳에서 갱신 등) 동기화한다.
-  if (items.length !== places.length || items.some((item, i) => item.id !== places[i]?.id)) {
+  // id·길이뿐 아니라 내용(카테고리·비용 등 편집)도 비교해야 한다 —
+  // id/length만 보면 편집 후 화면이 낡은 스냅샷에 멈춰 있는 버그가 있었다
+  // (features/wishlist/components/memo-tab.tsx에서 같은 패턴으로 발견).
+  if (JSON.stringify(items) !== JSON.stringify(places)) {
     setItems(places);
   }
 
