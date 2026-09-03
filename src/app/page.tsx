@@ -2,6 +2,7 @@ import { Home as HomeIcon, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { MotionDemo } from "@/components/motion-demo";
+import { TripsDemo } from "@/features/trips/components/trips-demo";
 
 // Tailwind는 클래스명을 정적으로 스캔하므로 템플릿 문자열로 조합하지 않고
 // 전체 클래스명을 리터럴로 나열한다.
@@ -19,12 +20,10 @@ export default function Home() {
   return (
     <>
       <main className="flex flex-1 flex-col gap-6 overflow-y-auto p-6">
-        <h1 className="font-serif text-2xl font-semibold text-foreground">
-          여행 플래너
-        </h1>
+        <h1 className="font-serif text-2xl font-semibold text-foreground">여행 플래너</h1>
         <p className="text-sm text-muted-foreground">
-          Phase 1 진행 중 — 실제 랜딩 화면은 Phase 2에서 채워집니다.
-          (P1-04~06 앱 셸 · 하단 네비게이션 · 토큰 확인용 임시 화면)
+          Phase 1 진행 중 — 실제 랜딩 화면은 Phase 2에서 채워집니다. (P1-04~06 앱 셸 · 하단
+          네비게이션 · 토큰 확인용 임시 화면)
         </p>
 
         <div className="rounded-lg border border-border bg-card p-4">
@@ -52,6 +51,11 @@ export default function Home() {
         </div>
 
         <MotionDemo />
+
+        <div className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold text-foreground">React Query + MSW 확인 (P1-08)</h2>
+          <TripsDemo />
+        </div>
       </main>
       <BottomNav
         items={[

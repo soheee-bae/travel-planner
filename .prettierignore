@@ -1,0 +1,11 @@
+.next
+node_modules
+public/mockServiceWorker.js
+pnpm-lock.yaml
+playwright-report
+test-results
+coverage
+
+# 문서는 손으로 다듬은 표·줄바꿈을 유지한다. Prettier 스코프 밖.
+*.md
+
