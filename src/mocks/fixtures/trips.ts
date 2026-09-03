@@ -37,4 +37,16 @@ export const initialTrips: Trip[] = [
     companions: "커플",
     coverEmoji: "🇯🇵",
   },
+  {
+    // 첨부 스크린샷(나고야 3일 일정)을 재현하기 위한 시드. Phase 4~6의 실제
+    // 일정/지도/비용 뷰 검증에서 이 여행의 일차별 데이터를 채워나간다.
+    id: "trip_nagoya",
+    title: "나고야 여행 플래너",
+    destinationCountry: "JP",
+    destinationCity: "나고야",
+    startDate: "2026-11-06",
+    endDate: "2026-11-08",
+    companions: "혼자",
+    coverEmoji: "🏯",
+  },
 ];

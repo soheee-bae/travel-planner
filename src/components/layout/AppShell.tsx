@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { Splash } from "@/components/splash";
 
 /**
  * 모바일 퍼스트 앱 프레임. 모바일에서는 전체 폭을 그대로 쓰고,
@@ -10,12 +11,13 @@ export function AppShell({ children, className }: { children: ReactNode; classNa
   return (
     <div
       className={cn(
-        "mx-auto flex min-h-dvh w-full max-w-md flex-col bg-background",
+        "relative mx-auto flex min-h-dvh w-full max-w-md flex-col bg-background",
         "md:border-x md:border-border",
         className,
       )}
     >
       {children}
+      <Splash />
     </div>
   );
 }

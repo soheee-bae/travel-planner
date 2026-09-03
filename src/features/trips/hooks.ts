@@ -1,11 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTrip, deleteTrip } from "@/features/trips/api";
-import { tripsKeys, tripsQueryOptions } from "@/features/trips/queries";
+import { tripQueryOptions, tripsKeys, tripsQueryOptions } from "@/features/trips/queries";
 import { randomUUID } from "@/lib/id";
 import type { CreateTripInput, Trip } from "@/mocks/fixtures/trips";
 
 export function useTrips() {
   return useQuery(tripsQueryOptions());
+}
+
+export function useTrip(id: string) {
+  return useQuery(tripQueryOptions(id));
 }
 
 /**

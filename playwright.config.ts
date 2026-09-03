@@ -25,7 +25,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm build && pnpm start",
+    // 실 백엔드가 붙기 전(Phase 10 이전)에는 e2e도 MSW mock으로 검증한다.
+    // NEXT_PUBLIC_* 는 빌드 시점에 인라인되므로 build 명령에도 넣어야 한다.
+    command: "NEXT_PUBLIC_ENABLE_MSW=true pnpm build && NEXT_PUBLIC_ENABLE_MSW=true pnpm start",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

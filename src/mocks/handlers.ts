@@ -11,6 +11,14 @@ export const handlers = [
     return HttpResponse.json(trips);
   }),
 
+  http.get("/api/trips/:id", async ({ params }) => {
+    const trip = trips.find((t) => t.id === params.id);
+    if (!trip) {
+      return HttpResponse.json({ message: "여행을 찾을 수 없습니다." }, { status: 404 });
+    }
+    return HttpResponse.json(trip);
+  }),
+
   http.post("/api/trips", async ({ request }) => {
     const body = await request.json();
     const parsed = createTripInputSchema.safeParse(body);

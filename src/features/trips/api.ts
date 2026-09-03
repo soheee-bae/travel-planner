@@ -13,6 +13,11 @@ export async function fetchTrips(): Promise<Trip[]> {
   return parseJsonOrThrow<Trip[]>(res);
 }
 
+export async function fetchTrip(id: string): Promise<Trip> {
+  const res = await fetch(`/api/trips/${id}`);
+  return parseJsonOrThrow<Trip>(res);
+}
+
 export async function createTrip(input: CreateTripInput): Promise<Trip> {
   const res = await fetch("/api/trips", {
     method: "POST",
