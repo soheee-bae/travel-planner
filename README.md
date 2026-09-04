@@ -61,5 +61,44 @@ Query+MSW, Notion 스타일(웜 미니멀리즘·serif 헤딩). Phase 1 구현 �
 
 ## 현재 상태
 
-Phase 1(프로젝트 셋업) 구현 중. `docs/08`의 Phase 단위로 하나씩 구현하고
-커밋·리뷰 후 다음 Phase로 진행한다.
+Phase 1~9(Next.js 셋업 → 스플래시+랜딩 → 여행 생성 폼 → 6탭 디테일 → 리스트/장소 →
+플래너/지도 → 비용 → 준비/체크리스트 → 메모/위시리스트)까지 구현·커밋 완료. 데이터
+레이어는 React Query + MSW가 계속 활성 상태다. `docs/08`의 Phase 단위로 하나씩
+구현하고 커밋·리뷰 후 다음 Phase로 진행한다.
+
+## Phase 10 — Supabase 연동 상태
+
+**Cloud Agent는 실제 Supabase 계정/프로젝트를 만들 수 없고 Docker도 없다.** 그래서
+이 Phase의 목표는 "실제 DB에 연결"이 아니라 "키만 넣으면 바로 붙는 code-ready
+상태까지 준비"다. 현재 화면 동작(MSW mock)에는 영향이 없다.
+
+### 현재 상태
+
+- **마이그레이션**: `supabase/migrations/` 9개 파일 — extensions/enums → trips →
+  overview(accommodations/transports) → places → expenses → checklists → wishlist
+  → RLS → views. `src/mocks/fixtures/*.ts`의 Zod 스키마와 1:1로 대응한다.
+  [libpg-query](https://www.npmjs.com/package/libpg-query)(실제 Postgres 파서)로
+  문법만 검증했고, **실제 Supabase 프로젝트나 로컬 DB에 적용해본 적은 없다.**
+- **시드**: `supabase/seed.sql` — 제주·오사카·나고야 3개 여행 + 나고야 트립의
+  하위 데이터(숙소·교통편·장소·비용·체크리스트·위시리스트)를 mock 시드와 동일하게
+  옮겼다. 로컬 개발용 더미 사용자를 `auth.users`에 직접 삽입한다.
+- **클라이언트 코드**: `src/lib/supabase/{client,server}.ts`는 준비됐지만
+  실제 프로젝트에 연결되어 있지 않다(환경변수 없으면 호출 시 런타임 에러).
+- **`src/proxy.ts`** (Next.js 16의 `middleware.ts` 후신): 세션 갱신만 담당하고
+  인증 경계는 아니다. `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY`가
+  없으면 완전히 no-op — 이 가드 덕분에 환경변수가 없는 지금 상태에서도 앱이 전혀
+  깨지지 않는다(e2e 48개로 검증 완료).
+- 로그인 UI는 아직 없다.
+
+### 실제로 연결하려면
+
+1. Cursor Dashboard → Cloud Agents → Secrets에 `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY`를 등록한다.
+2. `supabase link` 로 실제 프로젝트와 연결한다.
+3. `pnpm db:push` 로 마이그레이션을 적용한다.
+4. `pnpm db:types` 로 `src/lib/supabase/database.generated.ts`를 생성한다.
+
+### 스코프 밖 (P10-06, P10-08~11)
+
+RPC(트랜잭션), mock → 실DB 전환, Realtime, Storage, Vercel 배포는 실제
+Supabase 프로젝트 없이는 진행할 수 없어 이번 Phase에 포함하지 않았다.
