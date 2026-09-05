@@ -1,4 +1,4 @@
-import type { CreateExpenseInput, Expense } from "@/mocks/fixtures/expenses";
+import type { CreateExpenseInput, Expense, UpdateExpenseInput } from "@/mocks/fixtures/expenses";
 
 async function parseJsonOrThrow<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -18,6 +18,19 @@ export async function createExpense(input: CreateExpenseInput): Promise<Expense>
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+  });
+  return parseJsonOrThrow<Expense>(res);
+}
+
+export async function updateExpense(
+  tripId: string,
+  id: string,
+  patch: UpdateExpenseInput,
+): Promise<Expense> {
+  const res = await fetch(`/api/trips/${tripId}/expenses/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
   });
   return parseJsonOrThrow<Expense>(res);
 }

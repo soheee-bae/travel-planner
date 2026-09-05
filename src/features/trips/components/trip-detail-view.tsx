@@ -41,7 +41,7 @@ export function TripDetailView({ tripId }: { tripId: string }) {
             transition={{ duration: crossfade }}
           >
             {tab === "overview" && <OverviewTab tripId={tripId} />}
-            {tab === "places" && <PlacesTab tripId={tripId} />}
+            {tab === "places" && <PlacesTab trip={trip} />}
             {tab === "planner" && <PlannerTab trip={trip} />}
             {tab === "budget" && <BudgetTab trip={trip} />}
             {tab === "prep" && <PrepTab tripId={tripId} />}

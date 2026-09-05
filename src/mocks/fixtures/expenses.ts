@@ -37,6 +37,9 @@ export type Expense = z.infer<typeof expenseSchema>;
 export const createExpenseInputSchema = expenseSchema.omit({ id: true });
 export type CreateExpenseInput = z.infer<typeof createExpenseInputSchema>;
 
+export const updateExpenseInputSchema = expenseSchema.omit({ id: true, tripId: true }).partial();
+export type UpdateExpenseInput = z.infer<typeof updateExpenseInputSchema>;
+
 export const initialExpenses: Expense[] = [
   {
     id: "exp_nagoya_1",

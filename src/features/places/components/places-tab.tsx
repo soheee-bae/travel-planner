@@ -2,17 +2,26 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { usePlaces, useDeletePlace } from "@/features/places/hooks";
+import { usePlaces, useDeletePlace, useUpdatePlace } from "@/features/places/hooks";
 import { PlaceCard } from "@/features/places/components/place-card";
 import { PlaceFilterBar, type PlaceFilter } from "@/features/places/components/place-filter-bar";
 import { AddPlaceDialog } from "@/features/places/components/add-place-dialog";
+import { getTripDays } from "@/lib/trip-days";
+import type { Trip } from "@/mocks/fixtures/trips";
 
-export function PlacesTab({ tripId }: { tripId: string }) {
+export function PlacesTab({ trip }: { trip: Trip }) {
+  const tripId = trip.id;
   const { data: places, isLoading, isError } = usePlaces(tripId);
   const deletePlace = useDeletePlace(tripId);
+  const updatePlace = useUpdatePlace(tripId);
   const [filter, setFilter] = useState<PlaceFilter>("전체");
   const [selectionMode, setSelectionMode] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  const days = useMemo(
+    () => getTripDays(trip.startDate, trip.endDate),
+    [trip.startDate, trip.endDate],
+  );
 
   const counts = useMemo(() => {
     const base: Record<PlaceFilter, number> = {
@@ -49,6 +58,11 @@ export function PlacesTab({ tripId }: { tripId: string }) {
 
   function handleBulkDelete() {
     selected.forEach((id) => deletePlace.mutate(id));
+    exitSelectionMode();
+  }
+
+  function handleBulkAssign(dayIndex: number | null) {
+    selected.forEach((id) => updatePlace.mutate({ id, patch: { dayIndex } }));
     exitSelectionMode();
   }
 
@@ -95,6 +109,30 @@ export function PlacesTab({ tripId }: { tripId: string }) {
           )}
         </div>
       </div>
+
+      {selectionMode && (
+        <div className="flex flex-wrap gap-1.5" role="group" aria-label="선택한 장소를 Day에 배정">
+          {days.map((day) => (
+            <Button
+              key={day.dayIndex}
+              size="sm"
+              variant="outline"
+              disabled={selected.size === 0}
+              onClick={() => handleBulkAssign(day.dayIndex)}
+            >
+              Day{day.dayIndex}에 추가
+            </Button>
+          ))}
+          <Button
+            size="sm"
+            variant="ghost"
+            disabled={selected.size === 0}
+            onClick={() => handleBulkAssign(null)}
+          >
+            미배정으로
+          </Button>
+        </div>
+      )}
 
       {filtered.length === 0 && (
         <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">

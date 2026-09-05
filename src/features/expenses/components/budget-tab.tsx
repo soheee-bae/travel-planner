@@ -8,6 +8,7 @@ import {
   groupByPaymentMethod,
   sumAmount,
 } from "@/lib/expense-aggregation";
+import { settleEvenly } from "@/lib/dutch-pay";
 import { useDeleteExpense, useExpenses, useFxRate } from "@/features/expenses/hooks";
 import { BudgetDonutChart } from "@/features/expenses/components/budget-donut-chart";
 import { ExpenseCard } from "@/features/expenses/components/expense-card";
@@ -33,6 +34,8 @@ export function BudgetTab({ trip }: { trip: Trip }) {
 
   const total = useMemo(() => sumAmount(expenses ?? []), [expenses]);
   const categoryShares = useMemo(() => groupByCategory(expenses ?? []), [expenses]);
+
+  const settlements = useMemo(() => settleEvenly(expenses ?? []), [expenses]);
 
   const grouped = useMemo(() => {
     if (!expenses) return [];
@@ -105,6 +108,29 @@ export function BudgetTab({ trip }: { trip: Trip }) {
           </div>
         ))}
       </div>
+
+      {settlements.length > 1 && (
+        <section
+          aria-labelledby="dutch-pay-heading"
+          className="rounded-lg border border-border p-4"
+        >
+          <h2 id="dutch-pay-heading" className="mb-2 text-sm font-medium text-foreground">
+            더치페이 정산
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {settlements.map((row) => (
+              <li key={row.payer} className="flex items-center justify-between text-sm">
+                <span>{row.payer}</span>
+                <span className={row.balance >= 0 ? "text-money" : "text-destructive"}>
+                  {row.balance >= 0
+                    ? `${trip.baseCurrency} ${Math.round(row.balance).toLocaleString()} 받음`
+                    : `${trip.baseCurrency} ${Math.round(Math.abs(row.balance)).toLocaleString()} 더 냄`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="flex flex-col gap-2">
         {expenses?.length === 0 && (
