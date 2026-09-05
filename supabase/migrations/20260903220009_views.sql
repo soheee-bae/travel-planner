@@ -1,3 +1,7 @@
+-- lib/expense-aggregation.ts의 groupByCategory/groupByDay/sumAmount와 같은
+-- 결과를 내는 View. security_invoker가 없으면 View가 정의자 권한으로
+-- 실행되어 RLS를 우회한다(Postgres 15+, v1 설계 docs/02 §2.6과 동일 원칙).
+
 create view trip_totals with (security_invoker = on) as
 select trip_id, sum(amount) as total
 from expenses

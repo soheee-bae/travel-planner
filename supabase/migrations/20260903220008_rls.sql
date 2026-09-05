@@ -1,3 +1,6 @@
+-- 단일 관문 함수. 모든 정책이 이 함수 하나만 참조한다 — 나중에 동행자
+-- 공동편집을 붙일 때 이 함수만 바꾸면 전 테이블 정책을 다시 쓰지 않아도
+-- 된다(v1 설계 docs/02-data-model.md §2.7과 동일한 원칙).
 create function is_trip_owner(p_trip_id uuid)
 returns boolean
 language sql

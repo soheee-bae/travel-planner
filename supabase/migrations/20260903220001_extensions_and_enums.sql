@@ -1,5 +1,6 @@
 -- Phase 10: mocks/fixtures/*.ts의 Zod 스키마와 1:1로 대응하는 실 스키마.
--- 이 파일들은 실제 Supabase 프로젝트에 적용해본 적이 없다 — 검토·리뷰 후 신중히 적용할 것.
+-- 이 파일들은 실제 Supabase 프로젝트에 적용해본 적이 없다(Docker/자격증명
+-- 없음, docs/09-open-decisions.md 참고) — 검토·리뷰 후 신중히 적용할 것.
 
 create extension if not exists "pgcrypto"; -- gen_random_uuid()
 
